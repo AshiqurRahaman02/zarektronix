@@ -1,46 +1,171 @@
-# Getting Started with Create React App
+# EKSAQ Audio Recorder App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### The Audio Recorder App is a web application that allows users to record audio, playback recorded audio, upload recordings to the cloud, and store recordings for future uses.
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+-  [Getting Started](#getting-started)
+   -  [Prerequisites](#prerequisites)
+   -  [Installation](#installation)
+   -  [Configuration](#configuration)
+-  [Usage](#usage)
+-  [Eksaq server](#eksaq-server)
+-  [Contributing](#contributing)
+-  [License](#license)
 
-### `npm start`
+## Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Welcome to the EKSAQ Audio Recorder App! This section will guide you through the process of setting up and using the project.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Prerequisites
 
-### `npm test`
+To start with the EKSAQ Audio Recorder App you don't need any tools but you need a deeper understanding of the [React](https://react.dev/) and [Typescript](https://www.typescriptlang.org/)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Installation
 
-### `npm run build`
+Follow these steps to install and run the project:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. Clone the repository:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   ```bash
+   git clone https://github.com/AshiqurRahaman02/eksaq.git
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. Navigate to the project directory:
 
-### `npm run eject`
+   ```bash
+   cd eksaq
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+3. Set up your environment variables by creating a `.env` file in the root directory. Example content:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   ```env
+   REACT_APP_BACKEND_APP_BASE_URL=your_REACT_APP_BACKEND_APP_BASE_URL
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+4. Start your application:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+   ```bash
+   npm start
+   ```
 
-## Learn More
+5. Open the app in your browser at http://localhost:3000.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Configuration
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Before running the application, make sure to configure the necessary environment variables in the `.env` file.
+
+## Usage
+
+To use the project, follow these steps:
+
+1. Open the app in your browser at http://localhost:3000.
+2. Create a account or log into your account
+3. Click on Start Recording to start the recording
+4. Stop the recording to listen to the recorded audio
+5. Click on upload recording to upload the recording to the cloud and store the recording in the database for future use.
+
+## Eksaq server
+
+To use the eksaq server you need to read the configuration at [eksaq-server](https://github.com/AshiqurRahaman02/eksaq-server.git)
+
+
+
+## Contributing
+
+Thank you for considering contributing to our project! Whether you're reporting a bug, proposing a feature, or submitting code changes, your contributions are highly appreciated.
+
+## Issues
+
+If you find a bug, have a question, or want to propose a new feature, check our issue tracker for existing topics. If not found, feel free to open a new issue and provide details such as a clear title, steps to reproduce, and your environment.
+
+## Feature Requests
+
+Have a feature in mind? We welcome new ideas and enhancements. Open an issue on our GitHub repository to discuss and share your thoughts with the community.
+
+## Pull Requests
+
+Contributions through pull requests are welcome. To contribute:
+
+1. Fork the repository.
+
+2. Create a new branch for your changes: git checkout -b feature/your-feature.
+
+3. Make changes following our coding standards.
+
+4. Push changes to your fork: git push origin feature/your-feature.
+
+5. Open a pull request on GitHub with a clear description of your changes.
+
+## Coding Standards
+
+-  **Indentation and Formatting:**
+
+   1. Use tabs for indentation.
+   2. Follow the standard React formatting guidelines. You can use the Prettier extension to automatically format your code.
+   3. Variable Naming:
+
+-  **Variable Naming**
+
+   1. Use meaningful and descriptive names for variables.
+   2. Follow the camelCase naming convention for variables.
+
+-  **Function Naming:**
+
+   1. Use camelCase for function names.
+   2. Choose function names that indicate their purpose.
+
+-  **Comments:**
+
+   1. Include comments to explain complex sections of code or to provide context.
+   2. Write clear and concise comments.
+
+-  **Error Handling:**
+
+   1. Properly handle errors using the if err != nil pattern.
+   2. Avoid generic error messages; provide specific details when handling errors.
+
+-  **Testing:**
+
+   1. Write comprehensive unit tests for your code.
+   2. Ensure that tests cover different scenarios and edge cases.
+
+-  **Documentation:**
+
+   1. Provide documentation for public functions and packages.
+   2. Use GoDoc-style comments for documenting functions and packages.
+
+-  **Imports:**
+
+   1. Group imports into standard library packages, third-party packages, and local packages.
+   2. Avoid unused imports.
+
+-  **Concurrency and Goroutines:**
+
+   1. Use goroutines and channels responsibly.
+   2. Ensure proper synchronization to avoid race conditions.
+
+-  **Code Modularity:**
+
+   1. Encapsulate functionality into modular functions and packages.
+   2. Aim for a clear separation of concerns.
+
+-  **Security:**
+
+   1. Follow security best practices, especially when dealing with user input.
+   2. Be mindful of potential vulnerabilities and address them promptly.
+
+-  **Version Control:**
+
+   1. Make small, meaningful commits with clear commit messages.
+   2. Avoid committing large binary files or sensitive information.
+
+## Getting Help
+
+For questions or assistance, open an issue or join community discussions.
+
+##
+
+```
+Thank you for contributing! Feel free to customize it based on your project's specifics.
+```
