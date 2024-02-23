@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Cloudinary } from "@cloudinary/url-gen";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
@@ -15,7 +14,6 @@ import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import { recordRoutes } from "../Routes/recordRoutes";
-import { assert } from "console";
 import Player from "./Player";
 
 const notify = (message: string, type: string, time: number = 3000) => {
@@ -80,10 +78,6 @@ const notify = (message: string, type: string, time: number = 3000) => {
 type DisplayValue = "login" | "register" | "audio" | "";
 
 function Home() {
-	const cld = new Cloudinary({
-		cloud: { cloudName: process.env.REACT_APP_CLOUDNAME },
-	});
-
 	const [isLoding, setIsLoading] = useState<boolean>(true);
 	const [userDetails, setUserDetails] = useState<any | null>(null);
 	const [token, setToken] = useState<any | null>();
@@ -156,24 +150,26 @@ function Home() {
 		startRecording();
 	};
 
-	const uploadRecording =  () => {
+	const uploadRecording = () => {
 		confirmAlert({
 			title: "Confirm to upload recording",
 			message: "Are you sure, you want to upload this recording",
 			buttons: [
 				{
 					label: "Confirm",
-					onClick: async() => {
-						setIsLoading(true)
+					onClick: async () => {
+						setIsLoading(true);
 						if (!audioBlob) {
 							notify("Please record audio before uploading", "warning");
+							setIsLoading(false)
 							return;
 						}
 						if (!recordingName) {
 							notify("Please enter recording name", "warning");
+							setIsLoading(false)
 							return;
 						}
-				
+
 						const formData = new FormData();
 						formData.append("audio", audioBlob);
 						formData.append("name", recordingName);
@@ -191,19 +187,22 @@ function Home() {
 								const data = await response.json();
 								if (!data.isError && data.record) {
 									setUserRecordings((pre) => [data.record, ...pre]);
-									notify("Audio file uploaded successfully:", "success");
-									setIsLoading(false)
+									notify(
+										"Audio file uploaded successfully:",
+										"success"
+									);
+									setIsLoading(false);
 								} else {
 									notify("Error uploading audio file", "error");
-									setIsLoading(false)
+									setIsLoading(false);
 								}
 							} else {
 								notify("Internal server error", "error");
-								setIsLoading(false)
+								setIsLoading(false);
 							}
 						} catch (error) {
 							notify("Failed to upload audio file", "error");
-							setIsLoading(false)
+							setIsLoading(false);
 						}
 					},
 				},
@@ -213,7 +212,6 @@ function Home() {
 				},
 			],
 		});
-		
 	};
 
 	useEffect(() => {
@@ -462,10 +460,17 @@ function Home() {
 							<>
 								{userRecordings.length > 0 ? (
 									<div>
-										{userRecordings.map((record, index)=>{
-											return <>
-											<Player audio={record} index={index} token={token} notify={notify}/>
-											</>
+										{userRecordings.map((record, index) => {
+											return (
+												<>
+													<Player
+														audio={record}
+														index={index}
+														token={token}
+														notify={notify}
+													/>
+												</>
+											);
 										})}
 									</div>
 								) : (
@@ -527,10 +532,20 @@ function Home() {
 						</svg>
 					</button>
 					{display === "login" && (
-						<SignIn setDisplay={setDisplay} notify={notify} />
+						<SignIn
+							setDisplay={setDisplay}
+							notify={notify}
+							isLoading={isLoding}
+							setIsLoading={setIsLoading}
+						/>
 					)}
 					{display === "register" && (
-						<SignUp setDisplay={setDisplay} notify={notify} />
+						<SignUp
+							setDisplay={setDisplay}
+							notify={notify}
+							isLoading={isLoding}
+							setIsLoading={setIsLoading}
+						/>
 					)}
 				</div>
 			)}

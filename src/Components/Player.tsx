@@ -5,8 +5,15 @@ import ReactHowler from "react-howler";
 import { Slider } from "@mui/material";
 import { recordRoutes } from "../Routes/recordRoutes";
 
-function Player({ audio, index = 0, token, notify }) {
-	const audioRef = useRef();
+interface Props {
+	audio: any;
+	index: number;
+	token: string;
+	notify: any;
+}
+
+function Player({ audio, index = 0, token, notify }: Props) {
+	const audioRef = useRef<any | null>(null);
 	const [currentTime, setCurrentTime] = useState(0);
 	const [volume, setVoulume] = useState(100);
 
@@ -16,7 +23,7 @@ function Player({ audio, index = 0, token, notify }) {
 	const [displayTranscript, setDisplayTranscript] = useState(false);
 
 	useEffect(() => {
-		let interval;
+		let interval: any;
 
 		const handleInterval = () => {
 			setCurrentTime(audioRef.current.seek());
@@ -32,23 +39,23 @@ function Player({ audio, index = 0, token, notify }) {
 	}, [isPlaying]);
 
 	const getDuration = () => {
-		let timeInSeconds = audioRef.current?._howler._duration || 0;
+		let timeInSeconds = audioRef.current?._howler?._duration || 0;
 		return getTime(timeInSeconds) || "0:00";
 	};
 
-	const dragHandler = (e) => {
+	const dragHandler = (e: any) => {
 		const seekTime = parseFloat(e.target.value);
 		setCurrentTime(seekTime);
 		audioRef.current.seek(seekTime);
 	};
 
-	const getTime = (time) => {
+	const getTime = (time: any) => {
 		return (
 			Math.floor(time / 60) + ":" + ("0" + Math.floor(time % 60)).slice(-2)
 		);
 	};
 	const handleOnLoad = () => {
-		const duration = audioRef.current.duration();
+		const duration = audioRef?.current?.duration();
 		console.log("Duration:", duration);
 	};
 
@@ -87,11 +94,11 @@ function Player({ audio, index = 0, token, notify }) {
 			],
 		});
 	};
-	function timeConverter(inputDate) {
+	function timeConverter(inputDate: Date | string): string {
 		const currentDate = new Date();
 		const inputDateTime = new Date(inputDate);
 		const timeDifferenceInSeconds = Math.floor(
-			(currentDate - inputDateTime) / 1000
+			(currentDate.getTime() - inputDateTime.getTime()) / 1000
 		);
 
 		const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
@@ -105,7 +112,7 @@ function Player({ audio, index = 0, token, notify }) {
 			const hours = Math.floor(timeDifferenceInSeconds / 3600);
 			return rtf.format(-hours, "hour");
 		} else {
-			const options = {
+			const options: Intl.DateTimeFormatOptions = {
 				year: "numeric",
 				month: "long",
 				day: "numeric",
@@ -115,8 +122,18 @@ function Player({ audio, index = 0, token, notify }) {
 			return inputDateTime.toLocaleDateString("en-US", options);
 		}
 	}
+
+	const downloadRecording = async () => {
+		const response = await fetch(audio.audioUrl);
+
+		const file = await response.blob();
+		const link = document.createElement("a");
+		link.href = URL.createObjectURL(file);
+		link.download = `audio-${new Date().getTime()}`;
+		link.click();
+	};
 	return (
-		<>
+		<div key={index}>
 			<div
 				id="playing-container"
 				style={{
@@ -161,7 +178,7 @@ function Player({ audio, index = 0, token, notify }) {
 								role="img"
 								aria-hidden="true"
 								viewBox="0 0 16 16"
-								class="Svg-sc-ytk21e-0 dYnaPI"
+								className="Svg-sc-ytk21e-0 dYnaPI"
 							>
 								<path d="M2.7 1a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7H2.7zm8 0a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-2.6z"></path>
 							</svg>
@@ -171,7 +188,7 @@ function Player({ audio, index = 0, token, notify }) {
 								role="img"
 								aria-hidden="true"
 								viewBox="0 0 16 16"
-								class="Svg-sc-ytk21e-0 kPpCsU"
+								className="Svg-sc-ytk21e-0 kPpCsU"
 							>
 								<path d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288V1.713z"></path>
 							</svg>
@@ -199,7 +216,7 @@ function Player({ audio, index = 0, token, notify }) {
 								<Slider
 									aria-label="Temperature"
 									min={0}
-									max={audioRef.current?._howler._duration}
+									max={audioRef.current?._howler?._duration}
 									value={currentTime}
 									onChange={(e) => dragHandler(e)}
 									// size="small"
@@ -238,7 +255,7 @@ function Player({ audio, index = 0, token, notify }) {
 								xmlns="http://www.w3.org/2000/svg"
 								viewBox="0 0 24 24"
 								fill="currentColor"
-								class="w-6 h-6"
+								className="w-6 h-6"
 								onClick={() => setIsFavorite(false)}
 							>
 								<path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
@@ -250,7 +267,7 @@ function Player({ audio, index = 0, token, notify }) {
 								viewBox="0 0 24 24"
 								stroke-width="1.5"
 								stroke="currentColor"
-								class="w-6 h-6"
+								className="w-6 h-6"
 								onClick={() => setIsFavorite(true)}
 							>
 								<path
@@ -272,7 +289,7 @@ function Player({ audio, index = 0, token, notify }) {
 								viewBox="0 0 24 24"
 								stroke-width="1.5"
 								stroke="currentColor"
-								class="w-6 h-6"
+								className="w-6 h-6"
 								onClick={() => setVoulume(0)}
 							>
 								<path
@@ -288,7 +305,7 @@ function Player({ audio, index = 0, token, notify }) {
 								viewBox="0 0 24 24"
 								stroke-width="1.5"
 								stroke="currentColor"
-								class="w-6 h-6"
+								className="w-6 h-6"
 								onClick={() => setVoulume(100)}
 							>
 								<path
@@ -302,7 +319,7 @@ function Player({ audio, index = 0, token, notify }) {
 						<Slider
 							aria-label="Temperature"
 							value={volume}
-							onChange={(e) => setVoulume(e.target.value)}
+							onChange={(e: any) => setVoulume(e.target?.value)}
 							size="small"
 							id="slider"
 							style={{ width: "100px", color: "#1fdf64" }}
@@ -320,7 +337,7 @@ function Player({ audio, index = 0, token, notify }) {
 								viewBox="0 0 24 24"
 								stroke-width="1.5"
 								stroke="currentColor"
-								class="w-6 h-6"
+								className="w-6 h-6"
 								onClick={() => setDisplayTranscript(false)}
 							>
 								<path
@@ -336,7 +353,7 @@ function Player({ audio, index = 0, token, notify }) {
 								viewBox="0 0 24 24"
 								stroke-width="1.5"
 								stroke="currentColor"
-								class="w-6 h-6"
+								className="w-6 h-6"
 								onClick={() => setDisplayTranscript(true)}
 							>
 								<path
@@ -359,7 +376,7 @@ function Player({ audio, index = 0, token, notify }) {
 							viewBox="0 0 24 24"
 							stroke-width="1.5"
 							stroke="currentColor"
-							class="w-6 h-6"
+							className="w-6 h-6"
 						>
 							<path
 								stroke-linecap="round"
@@ -368,12 +385,12 @@ function Player({ audio, index = 0, token, notify }) {
 							/>
 						</svg>
 					</div>
-					<div title="Download Recording">
+					<div title="Download Recording" onClick={downloadRecording}>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							viewBox="0 0 24 24"
 							fill="currentColor"
-							class="w-6 h-6"
+							className="w-6 h-6"
 						>
 							<path
 								fill-rule="evenodd"
@@ -389,7 +406,7 @@ function Player({ audio, index = 0, token, notify }) {
 							viewBox="0 0 24 24"
 							stroke-width="1.5"
 							stroke="currentColor"
-							class="w-6 h-6"
+							className="w-6 h-6"
 						>
 							<path
 								stroke-linecap="round"
@@ -402,7 +419,7 @@ function Player({ audio, index = 0, token, notify }) {
 			</div>
 
 			{displayTranscript && <p>{audio.transcript}</p>}
-		</>
+		</div>
 	);
 }
 

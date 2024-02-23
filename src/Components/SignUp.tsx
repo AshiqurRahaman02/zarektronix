@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { userRoutes } from "../Routes/userRoutes";
 
-type DisplayValue = "login" | "register" | "audio" |  "";
+type DisplayValue = "login" | "register" | "audio" | "";
 interface Props {
 	setDisplay: React.Dispatch<React.SetStateAction<DisplayValue>>;
 	notify: any;
+	isLoading: boolean;
+	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
-function SignUp({ setDisplay, notify }: Props) {
+function SignUp({ setDisplay, notify , setIsLoading, isLoading}: Props) {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -19,11 +20,10 @@ function SignUp({ setDisplay, notify }: Props) {
 		if (email && password) {
 			signUpFunction();
 		} else {
-            if(!name){
-                let message = "Please enter a valid name";
+			if (!name) {
+				let message = "Please enter a valid name";
 				notify(message, "warning");
-            }else
-			if (!email) {
+			} else if (!email) {
 				let message = "Please enter a valid email";
 				notify(message, "warning");
 			} else {
@@ -34,10 +34,11 @@ function SignUp({ setDisplay, notify }: Props) {
 	};
 	const signUpFunction = () => {
 		let user = {
-            name,
+			name,
 			email,
 			password,
 		};
+		setIsLoading(true)
 
 		fetch(userRoutes.register, {
 			method: "POST",
@@ -50,6 +51,7 @@ function SignUp({ setDisplay, notify }: Props) {
 			.then((res) => {
 				if (res.isError) {
 					notify(res.message, "warning");
+					setIsLoading(false)
 				} else {
 					handleSuccessfulSignup(res);
 				}
@@ -57,6 +59,7 @@ function SignUp({ setDisplay, notify }: Props) {
 			.catch((err) => {
 				console.log(err);
 				notify(err.message, "error");
+				setIsLoading(false)
 			});
 	};
 	const handleSuccessfulSignup = (res: any) => {
@@ -65,7 +68,7 @@ function SignUp({ setDisplay, notify }: Props) {
 		localStorage.setItem("token", res.token);
 		setTimeout(() => {
 			setDisplay("");
-			window.location.reload()
+			window.location.reload();
 		}, 3000);
 	};
 	return (
@@ -190,11 +193,13 @@ function SignUp({ setDisplay, notify }: Props) {
 					</div>
 					<span className="span">Forgot password?</span>
 				</div>
-				<button className="button-submit" onClick={handleSignUpSubmit}>Sign In</button>
+				<button className="button-submit" onClick={handleSignUpSubmit}>
+					Sign Up
+				</button>
 				<p className="p">
 					Don't have an account?{" "}
 					<span className="span" onClick={() => setDisplay("login")}>
-						Sign Up
+						Sign In
 					</span>
 				</p>
 				<p className="p line">Or With</p>

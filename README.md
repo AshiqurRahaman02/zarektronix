@@ -9,6 +9,7 @@
    -  [Installation](#installation)
    -  [Configuration](#configuration)
 -  [Usage](#usage)
+-  [Presentation](#presentation)
 -  [Eksaq server](#eksaq-server)
 -  [Contributing](#contributing)
 -  [License](#license)
@@ -64,6 +65,10 @@ To use the project, follow these steps:
 3. Click on Start Recording to start the recording
 4. Stop the recording to listen to the recorded audio
 5. Click on upload recording to upload the recording to the cloud and store the recording in the database for future use.
+
+## Presentation
+
+[Youtube](https://youtu.be/93Jrk9Fz8AE)
 
 ## Eksaq server
 

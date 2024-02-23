@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { userRoutes } from "../Routes/userRoutes";
 
 type DisplayValue = "login" | "register" | "audio" | "";
 interface Props {
 	setDisplay: React.Dispatch<React.SetStateAction<DisplayValue>>;
 	notify: any;
+	isLoading: boolean;
+	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
-function SignIn({ setDisplay, notify }: Props) {
+function SignIn({ setDisplay, notify , setIsLoading, isLoading}: Props) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
@@ -27,6 +29,7 @@ function SignIn({ setDisplay, notify }: Props) {
 		}
 	};
 	const signInFunction = () => {
+		setIsLoading(true)
 		let user = {
 			email,
 			password,
@@ -44,6 +47,7 @@ function SignIn({ setDisplay, notify }: Props) {
 			.then((res) => {
 				if (res.isError) {
 					notify(res.message, "warning");
+					setIsLoading(false)
 				} else {
 					handleSuccessfulSignin(res);
 				}
@@ -51,6 +55,7 @@ function SignIn({ setDisplay, notify }: Props) {
 			.catch((err) => {
 				console.log(err);
 				notify(err.message, "error");
+				setIsLoading(false)
 			});
 	};
 	const handleSuccessfulSignin = (res: any) => {
@@ -139,7 +144,7 @@ function SignIn({ setDisplay, notify }: Props) {
 						setPassword("demo.eksaq");
 					}}
 				>
-					Sign to demo account
+					Sign In to demo account
 				</button>
 				<p className="p">
 					Don't have an account?{" "}

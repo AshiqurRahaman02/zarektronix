@@ -460,6 +460,7 @@ main > section:nth-child(2) {
 
 .banter-loader {
 	position: absolute;
+	z-index: 25;
 	left: 50%;
 	top: 50%;
 	width: 72px;

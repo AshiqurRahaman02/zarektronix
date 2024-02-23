@@ -14,3 +14,4 @@ declare module "*.scss" {
 }
 
 declare module "react-speech-recognition";
+declare module "react-howler";
