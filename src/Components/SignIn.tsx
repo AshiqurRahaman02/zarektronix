@@ -35,7 +35,6 @@ function SignIn({ setDisplay, notify, setIsLoading, isLoading }: Props) {
 			password,
 		};
 
-		console.log(userRoutes.login)
 
 		fetch(userRoutes.login, {
 			method: "POST",

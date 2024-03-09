@@ -103,8 +103,29 @@ function Expenses({
 				return;
 			}
 
+			const newExpenses = expenses.map((expense: any) => {
+				const { name, description, date, amount, category, status, receiptsUrls } = expense;
+			
+				const transformedExpense: any = {
+					heading: name,
+					description: description,
+					date: date,
+					amount: amount,
+					category: category,
+					status: status,
+				};
+			
+				receiptsUrls.forEach((url: string, index: number) => {
+					transformedExpense[`receipts${index + 1}`] = url;
+				});
+			
+				// Return the transformed expense
+				return transformedExpense;
+			});
+			
+
 			const workbook = XLSX.utils.book_new();
-			const worksheet = XLSX.utils.json_to_sheet(expenses);
+			const worksheet = XLSX.utils.json_to_sheet(newExpenses);
 
 			XLSX.utils.book_append_sheet(workbook, worksheet, "Expenses");
 			const filename = `Company Expenses.xlsx`;
@@ -177,6 +198,32 @@ function Expenses({
 		return result;
 	};
 
+	const getTotalExpensesByStatus = (
+		expenses: any
+	): { name: string; totalAmount: number }[] => {
+		const totalExpensesByStatus: { [key: string]: number } = {};
+
+		// Iterate over expenses and aggregate total amount for each category
+		expenses.forEach((expense: any) => {
+			const { status, amount } = expense;
+			totalExpensesByStatus[status] =
+				(totalExpensesByStatus[status] || 0) + amount;
+		});
+
+		// Convert the object into an array of objects
+		const result: { name: string; totalAmount: number }[] = [];
+		for (const category in totalExpensesByStatus) {
+			if (totalExpensesByStatus.hasOwnProperty(category)) {
+				result.push({
+					name: category,
+					totalAmount: totalExpensesByStatus[category],
+				});
+			}
+		}
+
+		return result;
+	};
+
 	const groupExpensesByUserName = (expenses: any) => {
 		const groupedExpenses: any = {};
 
@@ -202,15 +249,18 @@ function Expenses({
 	};
 
 	const getTotalExpenses = (): number => {
-		return expenses.reduce((total:any, expense:any) => total + expense.amount, 0);
+		return expenses.reduce(
+			(total: any, expense: any) => total + expense.amount,
+			0
+		);
 	};
-	
+
 	// Function to calculate average expenses
-	const getAverageExpense = (): number => {
+	const getAverageExpense = ()=> {
 		const totalExpenses = getTotalExpenses();
 		const numExpenses = expenses.length;
-		if (numExpenses === 0) return 0; // Prevent division by zero
-		return totalExpenses / numExpenses;
+		if (numExpenses === 0) return 0; 
+		return (totalExpenses / numExpenses).toFixed(2);
 	};
 
 	return (
@@ -323,7 +373,8 @@ function Expenses({
 					<thead>
 						<tr>
 							<th>#</th>
-							<th>Name / <br />
+							<th>
+								Name / <br />
 								Description
 							</th>
 							<th>Amount</th>
@@ -363,16 +414,21 @@ function Expenses({
 
 					<CustomShapeBar data={getTotalExpensesLast12Months(expenses)} />
 				</div>
-				<div style={{display:"flex", justifyContent:"space-evenly"}}>
+				<div style={{ display: "flex", justifyContent: "space-evenly" }}>
 					<div>
 						<h2>Expenses Based on Categories</h2>
 
 						<CustomPieChart data={getTotalExpensesByCategory(expenses)} />
 					</div>
-					{active === "employee" && (
+					{active === "employee" ? (
 						<div>
 							<h2>Expenses Based on Employee</h2>
 							<CustomPieChart data={groupExpensesByUserName(expenses)} />
+						</div>
+					):(
+						<div>
+							<h2>Expenses Based on Status</h2>
+							<CustomPieChart data={getTotalExpensesByStatus(expenses)} />
 						</div>
 					)}
 				</div>

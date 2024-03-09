@@ -214,7 +214,7 @@ function Home() {
 
 	const getPendingCount = (expenses: any) => {
 		const pendingExpenses = expenses.filter(
-			(expense: any) => expense.status === "pending"
+			(expense: any) => expense.status === "pending" || expense.status === "information-required"
 		);
 		return pendingExpenses.length;
 	};
@@ -505,7 +505,7 @@ function Home() {
 						/>
 					)}
 
-					{display === "expense" && (
+					{display === "expense" && activeExpense && (
 						<DisplayExpense
 						
 							setDisplay={setDisplay}
@@ -517,6 +517,8 @@ function Home() {
 							setIsLoading={setIsLoading}
 							expense={activeExpense}
 							userType={userDetails.userType}
+
+							userId= {userDetails._id}
 						/>
 					)}
 				</div>

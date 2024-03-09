@@ -117,16 +117,19 @@ function Expense({
 					notify(res.message, "warning");
 				} else {
 					notify(res.message, "success");
+					setTimeout(() => {
+						
+				window.location.reload();
+					}, 1000);
 				}
 			})
 			.catch((err) => {
 				console.log(err);
 				notify(err.message, "error");
-				setIsLoading(false);
 			})
 			.finally(() => {
 				setDisplay("");
-				window.location.reload();
+				setIsLoading(false);
 			});
 	};
 
