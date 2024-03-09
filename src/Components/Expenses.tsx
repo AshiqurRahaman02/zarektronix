@@ -414,7 +414,7 @@ function Expenses({
 
 					<CustomShapeBar data={getTotalExpensesLast12Months(expenses)} />
 				</div>
-				<div style={{ display: "flex", justifyContent: "space-evenly" }}>
+				<div style={{ display: "flex", justifyContent: "space-evenly",flexWrap:"wrap" }}>
 					<div>
 						<h2>Expenses Based on Categories</h2>
 

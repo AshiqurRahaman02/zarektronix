@@ -36,7 +36,7 @@ const TriangleBar = (props: any) => {
 export default function CustomShapeBar({ data }: any) {
 	return (
 		<BarChart
-			width={1200}
+			width={900}
 			height={400}
 			data={data}
 			margin={{

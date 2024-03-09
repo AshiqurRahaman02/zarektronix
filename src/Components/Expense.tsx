@@ -118,8 +118,7 @@ function Expense({
 				} else {
 					notify(res.message, "success");
 					setTimeout(() => {
-						
-				window.location.reload();
+						window.location.reload();
 					}, 1000);
 				}
 			})
@@ -180,17 +179,11 @@ function Expense({
 	return (
 		<tr key={index}>
 			<td>{index + 1}</td>
-			<td><span style={{fontWeight:"700"}}>{expense.name}</span> <br /><span  style={{fontWeight:"300"}}>{expense.description}</span>
-			</td>
 			<td>
-				{/* <input
-					type="number"
-					value={expense.amount}
-					style={{ border: "0", backgroundColor: "transparent", outline:"0" }}
-					readOnly 
-				/> */}
-				{expense.amount}
+				<span style={{ fontWeight: "700" }}>{expense.name}</span> <br />
+				<span style={{ fontWeight: "300" }}>{expense.description}</span>
 			</td>
+			<td>{expense.amount}</td>
 			<td>{expense.category}</td>
 			<td>{expense.date}</td>
 			<td>
@@ -207,7 +200,7 @@ function Expense({
 			</td>
 			<td id="actions">
 				<button
-					title="Display recipts"
+					title="Display/Edit recipts"
 					className="button2"
 					onClick={handelDisplayExpense}
 				>

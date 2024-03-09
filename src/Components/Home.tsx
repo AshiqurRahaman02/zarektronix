@@ -166,7 +166,7 @@ function Home() {
 				if (res.isError) {
 					notify(res.message, "warning");
 				} else {
-					console.log(res.expenses[0])
+					console.log(res.expenses[0]);
 					setEmployeeExpenses(res.expenses);
 				}
 			})
@@ -214,9 +214,145 @@ function Home() {
 
 	const getPendingCount = (expenses: any) => {
 		const pendingExpenses = expenses.filter(
-			(expense: any) => expense.status === "pending" || expense.status === "information-required"
+			(expense: any) =>
+				expense.status === "pending" ||
+				expense.status === "information-required"
 		);
 		return pendingExpenses.length;
+	};
+
+	const getActiveNotifications = () => {
+		const activeNotifications = notifications.filter(
+			(notification: any) => !notification.isRead
+		);
+		return activeNotifications.length;
+	};
+
+	const markAllAsRead = () => {
+		confirmAlert({
+			title: "Confirm to mark all notifications as read",
+			message: "Are you sure, you want to make all notifications as read",
+			buttons: [
+				{
+					label: "Confirm",
+					onClick: async () => {
+						setIsLoading(true);
+						fetch(`${notificationRoutes.markAllAsReadNotifications}`, {
+							method: "PUT",
+							headers: {
+								"Content-Type": "application/json",
+								Authorization: token,
+							},
+						})
+							.then((res) => res.json())
+							.then((res) => {
+								if (res.isError) {
+									notify(res.message, "warning");
+								} else {
+									notify(res.message, "success");
+								}
+							})
+							.catch((err) => {
+								console.log(err);
+								notify(err.message, "error");
+							})
+							.finally(() => {
+								setDisplay("");
+								setIsLoading(false);
+							});
+					},
+				},
+				{
+					label: "Cancel",
+					onClick: () => {},
+				},
+			],
+		});
+	};
+
+	const markAsRead = (id: any) => {
+		confirmAlert({
+			title: "Confirm to mark this notifications as read",
+			message: "Are you sure, you want to make this notifications as read",
+			buttons: [
+				{
+					label: "Confirm",
+					onClick: async () => {
+						setIsLoading(true);
+						fetch(`${notificationRoutes.markAsReadNotification}/${id}`, {
+							method: "PUT",
+							headers: {
+								"Content-Type": "application/json",
+								Authorization: token,
+							},
+						})
+							.then((res) => res.json())
+							.then((res) => {
+								if (res.isError) {
+									notify(res.message, "warning");
+								} else {
+									notify(res.message, "success");
+								}
+							})
+							.catch((err) => {
+								console.log(err);
+								notify(err.message, "error");
+							})
+							.finally(() => {
+								setDisplay("");
+								setIsLoading(false);
+							});
+					},
+				},
+				{
+					label: "Cancel",
+					onClick: () => {},
+				},
+			],
+		});
+	};
+
+	const deleteNotification = (id: any) => {
+		confirmAlert({
+			title: "Confirm to delete notification",
+			message: "Are you sure, you want to delete this notification",
+			buttons: [
+				{
+					label: "Confirm",
+					onClick: async () => {
+						setIsLoading(true);
+						fetch(`${notificationRoutes.deleteNotification}`, {
+							method: "DELETE",
+							headers: {
+								"Content-Type": "application/json",
+								Authorization: token,
+							},
+							body: JSON.stringify({ ids: [id] }),
+						})
+							.then((res) => res.json())
+							.then((res) => {
+								if (res.isError) {
+									notify(res.message, "warning");
+								} else {
+									notify(res.message, "success");
+								}
+							})
+							.catch((err) => {
+								console.log(err);
+								notify(err.message, "error");
+							})
+							.finally(() => {
+								setDisplay("");
+								setIsLoading(false);
+							});
+					},
+				},
+				{
+					label: "Cancel",
+					onClick: () => {},
+				},
+			],
+		});
 	};
 
 	return (
@@ -226,51 +362,156 @@ function Home() {
 				<div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
 					<div className="paste-button">
 						<button className="notification">
-							<FontAwesomeIcon icon={faBell} /> {notifications.length}
+							<FontAwesomeIcon icon={faBell} />{" "}
+							{getActiveNotifications()}
 						</button>
 						<div className="notifications">
 							{notifications.length > 0 ? (
-								<div>
-									{notifications.map((notification: any, index) => {
-										return (
-											<div
-												key={index}
-												// onClick={() =>
-												// 	handelReadNotification(
-												// 		notification.time
-												// 	)
-												// }
+								<>
+									<div
+										style={{
+											display: "flex",
+											justifyContent: "space-between",
+											alignItems: "center",
+											fontSize: "17px",
+										}}
+									>
+										<p
+											style={{
+												margin: "0px",
+											}}
+										>
+											Total notifications: {notifications.length}
+										</p>
+										{getActiveNotifications() > 0 && (
+											<p
+												style={{
+													backgroundColor: "#3D94E8",
+													padding: "5px",
+													borderRadius: "5px",
+													cursor: "pointer",
+													margin: "0px",
+
+													display: "flex",
+													alignItems: "center",
+												}}
+												onClick={markAllAsRead}
 											>
-												<p
-													style={{
-														display: "flex",
-														justifyContent: "space-between",
-													}}
+												Mark all as read
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													height="20"
+													viewBox="0 -960 960 960"
+													width="20"
 												>
-													{notification.heading}{" "}
-													{!notification.isRead && (
-														<FontAwesomeIcon
-															icon={faCircle}
+													<path d="M293-281 123-451l51-51 119 119 51 51-51 51Zm204-1L327-451l51-51 119 119 288-289 51 51-339 339Zm0-203-51-51 136-136 51 51-136 136Z" />
+												</svg>
+											</p>
+										)}
+									</div>
+									<div
+										style={{
+											display: "flex",
+											flexDirection: "column",
+											gap: "5px",
+										}}
+									>
+										{notifications.map((notification: any, index) => {
+											return (
+												<div key={index}>
+													<p
+														style={{
+															display: "flex",
+															justifyContent: "space-between",
+														}}
+													>
+														{notification.heading}{" "}
+														{!notification.isRead && (
+															<FontAwesomeIcon
+																icon={faCircle}
+																style={{
+																	color: "#1aff66",
+																}}
+															/>
+														)}
+													</p>
+													<p
+														style={{
+															margin: "5px 0px",
+														}}
+													>
+														{notification.text}
+													</p>
+													<div
+														style={{
+															display: "flex",
+															gap: "20px",
+															alignItems: "center",
+															fontSize: "14px",
+															margin: "0px",
+														}}
+													>
+														{!notification.isRead && (
+															<p
+																style={{
+																	backgroundColor: "#3D94E8",
+																	padding: "5px",
+																	borderRadius: "5px",
+																	cursor: "pointer",
+																	margin: "0px",
+
+																	display: "flex",
+																	alignItems: "center",
+																}}
+																onClick={() =>
+																	markAsRead(notification._id)
+																}
+															>
+																Mark as read
+																<svg
+																	xmlns="http://www.w3.org/2000/svg"
+																	height="20"
+																	viewBox="0 -960 960 960"
+																	width="20"
+																>
+																	<path d="M293-281 123-451l51-51 119 119 51 51-51 51Zm204-1L327-451l51-51 119 119 288-289 51 51-339 339Zm0-203-51-51 136-136 51 51-136 136Z" />
+																</svg>
+															</p>
+														)}
+														<p
 															style={{
-																color: "#1aff66",
+																backgroundColor:
+																	"rgb(255 57 41)",
+																padding: "5px",
+																borderRadius: "5px",
+																cursor: "pointer",
+																margin: "0px",
+
+																display: "flex",
+																alignItems: "center",
 															}}
-														/>
-													)}
-												</p>
-												{/* <p>{notification.time}</p> */}
-												<p>{notification.text}</p>
-												{/* {notification.link && (
-																<Link to={notification.link}>
-																	Go{" "}
-																	<FontAwesomeIcon
-																		icon={faArrowRight}
-																	/>
-																</Link>
-															)} */}
-											</div>
-										);
-									})}
-								</div>
+															onClick={() =>
+																deleteNotification(
+																	notification._id
+																)
+															}
+														>
+															Delete
+															<svg
+																xmlns="http://www.w3.org/2000/svg"
+																height="20"
+																viewBox="0 -960 960 960"
+																width="20"
+															>
+																<path d="M312-144q-29.7 0-50.85-21.15Q240-186.3 240-216v-480h-48v-72h192v-48h192v48h192v72h-48v479.566Q720-186 698.85-165 677.7-144 648-144H312Zm336-552H312v480h336v-480ZM384-288h72v-336h-72v336Zm120 0h72v-336h-72v336ZM312-696v480-480Z" />
+															</svg>
+														</p>
+													</div>
+												</div>
+											);
+										})}
+									</div>
+								</>
 							) : (
 								<div>
 									<p>No notification</p>
@@ -349,7 +590,6 @@ function Home() {
 								<span className="glider"></span>
 							</div>
 						</div>
-						
 					</div>
 					<div>
 						{isLoading ? (
@@ -381,7 +621,6 @@ function Home() {
 											expenses={employeeExpenses}
 											userType={userDetails.userType}
 											setActiveExpense={setActiveExpense}
-
 											active={active}
 										/>
 									) : (
@@ -408,7 +647,6 @@ function Home() {
 											expenses={userExpenses}
 											userType={userDetails.userType}
 											setActiveExpense={setActiveExpense}
-
 											active={active}
 										/>
 										<button
@@ -507,7 +745,6 @@ function Home() {
 
 					{display === "expense" && activeExpense && (
 						<DisplayExpense
-						
 							setDisplay={setDisplay}
 							notify={notify}
 							confirmAlert={confirmAlert}
@@ -517,8 +754,7 @@ function Home() {
 							setIsLoading={setIsLoading}
 							expense={activeExpense}
 							userType={userDetails.userType}
-
-							userId= {userDetails._id}
+							userId={userDetails._id}
 						/>
 					)}
 				</div>
