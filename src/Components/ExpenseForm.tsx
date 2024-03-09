@@ -26,12 +26,7 @@ function ExpenseForm({
 	const [amount, setAmount] = useState("");
 	const [expenseDate, setExpenseDate] = useState("");
 	const [expenseCategory, setExpenseCategory] = useState("");
-	const [reciptsUrls, setReciptsUrls] = useState<any | "">([
-		"http://res.cloudinary.com/dpeycb3s4/image/upload/v1709972687/mwrjkctgriqyfwrbdcpy.png",
-		"http://res.cloudinary.com/dpeycb3s4/image/upload/v1709972741/zdpyd7j3bo9yntvbczkz.png",
-		"http://res.cloudinary.com/dpeycb3s4/image/upload/v1709972786/lv61fhug2czgfsdemrga.png",
-		"http://res.cloudinary.com/dpeycb3s4/image/upload/v1709972923/yd0ky8jhralft4jrge6p.png",
-	]);
+	const [reciptsUrls, setReciptsUrls] = useState<any | "">([]);
 
 	const [imageUploadLoading, setImageUploadLoading] = useState(false);
 
@@ -98,7 +93,6 @@ function ExpenseForm({
 			category: expenseCategory,
 			receiptsUrls: reciptsUrls,
 		};
-
 
 		fetch(expenseRoutes.addExpense, {
 			method: "POST",
