@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { userRoutes } from "../Routes/userRoutes";
 
-type DisplayValue = "login" | "register" | "audio" | "";
+type DisplayValue = "login" | "register" | "expense-form" | "expense" | "";
 interface Props {
 	setDisplay: React.Dispatch<React.SetStateAction<DisplayValue>>;
 	notify: any;
 	isLoading: boolean;
 	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
-function SignUp({ setDisplay, notify , setIsLoading, isLoading}: Props) {
+function SignUp({ setDisplay, notify, setIsLoading, isLoading }: Props) {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [role, setRole] = useState("employee");
 	const [showPassword, setShowPassword] = useState(false);
 
 	const handleSignUpSubmit = (e: any) => {
@@ -37,8 +38,9 @@ function SignUp({ setDisplay, notify , setIsLoading, isLoading}: Props) {
 			name,
 			email,
 			password,
+			userType: role,
 		};
-		setIsLoading(true)
+		setIsLoading(true);
 
 		fetch(userRoutes.register, {
 			method: "POST",
@@ -51,7 +53,7 @@ function SignUp({ setDisplay, notify , setIsLoading, isLoading}: Props) {
 			.then((res) => {
 				if (res.isError) {
 					notify(res.message, "warning");
-					setIsLoading(false)
+					setIsLoading(false);
 				} else {
 					handleSuccessfulSignup(res);
 				}
@@ -59,7 +61,7 @@ function SignUp({ setDisplay, notify , setIsLoading, isLoading}: Props) {
 			.catch((err) => {
 				console.log(err);
 				notify(err.message, "error");
-				setIsLoading(false)
+				setIsLoading(false);
 			});
 	};
 	const handleSuccessfulSignup = (res: any) => {
@@ -71,6 +73,11 @@ function SignUp({ setDisplay, notify , setIsLoading, isLoading}: Props) {
 			window.location.reload();
 		}, 3000);
 	};
+
+	const functionlityOnDevelopment = () => {
+		notify("This functioinlity is not available right now", "info");
+	};
+	
 	return (
 		<div>
 			<form className="form">
@@ -186,12 +193,47 @@ function SignUp({ setDisplay, notify , setIsLoading, isLoading}: Props) {
 					)}
 				</div>
 
+				<div className="flex-column">
+					<label>Role in company </label>
+				</div>
+				<div
+					className="inputForm"
+					style={{
+						display: "flex",
+						justifyContent: "space-evenly",
+						border: "0px",
+					}}
+				>
+					<label style={{ cursor: "pointer" }}>
+						<input
+							type="radio"
+							name="visibility"
+							value="onlyMe"
+							checked={role === "employee"}
+							onChange={() => setRole("employee")}
+						/>
+						Employee
+					</label>
+					<label style={{ cursor: "pointer" }}>
+						<input
+							type="radio"
+							name="visibility"
+							value="public"
+							checked={role === "manager"}
+							onChange={() => setRole("manager")}
+						/>
+						Manager
+					</label>
+				</div>
+
 				<div className="flex-row">
 					<div>
 						<input type="checkbox" />
 						<label>Remember me </label>
 					</div>
-					<span className="span">Forgot password?</span>
+					<span className="span" onClick={functionlityOnDevelopment}>
+						Forgot password?
+					</span>
 				</div>
 				<button className="button-submit" onClick={handleSignUpSubmit}>
 					Sign Up
@@ -205,7 +247,10 @@ function SignUp({ setDisplay, notify , setIsLoading, isLoading}: Props) {
 				<p className="p line">Or With</p>
 
 				<div className="flex-row">
-					<button className="btn google">
+					<button
+						className="btn google"
+						onClick={functionlityOnDevelopment}
+					>
 						<svg
 							version="1.1"
 							width="20"
@@ -245,7 +290,10 @@ function SignUp({ setDisplay, notify , setIsLoading, isLoading}: Props) {
 						</svg>
 						Google
 					</button>
-					<button className="btn apple">
+					<button
+						className="btn apple"
+						onClick={functionlityOnDevelopment}
+					>
 						<svg
 							version="1.1"
 							height="20"

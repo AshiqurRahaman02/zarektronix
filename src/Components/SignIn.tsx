@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { userRoutes } from "../Routes/userRoutes";
 
-type DisplayValue = "login" | "register" | "audio" | "";
+type DisplayValue = "login" | "register" | "expense-form" | "expense" | "";
 interface Props {
 	setDisplay: React.Dispatch<React.SetStateAction<DisplayValue>>;
 	notify: any;
 	isLoading: boolean;
 	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
-function SignIn({ setDisplay, notify , setIsLoading, isLoading}: Props) {
+function SignIn({ setDisplay, notify, setIsLoading, isLoading }: Props) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
@@ -29,12 +29,11 @@ function SignIn({ setDisplay, notify , setIsLoading, isLoading}: Props) {
 		}
 	};
 	const signInFunction = () => {
-		setIsLoading(true)
+		setIsLoading(true);
 		let user = {
 			email,
 			password,
 		};
-		console.log(user);
 
 		fetch(userRoutes.login, {
 			method: "POST",
@@ -47,7 +46,7 @@ function SignIn({ setDisplay, notify , setIsLoading, isLoading}: Props) {
 			.then((res) => {
 				if (res.isError) {
 					notify(res.message, "warning");
-					setIsLoading(false)
+					setIsLoading(false);
 				} else {
 					handleSuccessfulSignin(res);
 				}
@@ -55,7 +54,7 @@ function SignIn({ setDisplay, notify , setIsLoading, isLoading}: Props) {
 			.catch((err) => {
 				console.log(err);
 				notify(err.message, "error");
-				setIsLoading(false)
+				setIsLoading(false);
 			});
 	};
 	const handleSuccessfulSignin = (res: any) => {
@@ -64,8 +63,12 @@ function SignIn({ setDisplay, notify , setIsLoading, isLoading}: Props) {
 		localStorage.setItem("token", res.token);
 		setTimeout(() => {
 			setDisplay("");
-			window.location.reload()
+			window.location.reload();
 		}, 3000);
+	};
+
+	const functionlityOnDevelopment = () => {
+		notify("This functioinlity is not available right now", "info");
 	};
 
 	return (
@@ -129,22 +132,12 @@ function SignIn({ setDisplay, notify , setIsLoading, isLoading}: Props) {
 						<input type="checkbox" />
 						<label>Remember me </label>
 					</div>
-					<span className="span">Forgot password?</span>
+					<span className="span" onClick={functionlityOnDevelopment}>
+						Forgot password?
+					</span>
 				</div>
 				<button className="button-submit" onClick={handleSignInSubmit}>
 					Sign In
-				</button>
-				<p className="p line">Or</p>
-				<button
-					className="button-submit"
-					onClick={(e) => {
-						e.preventDefault();
-
-						setEmail("demo.eksaq@gmail.com");
-						setPassword("demo.eksaq");
-					}}
-				>
-					Sign In to demo account
 				</button>
 				<p className="p">
 					Don't have an account?{" "}
@@ -155,7 +148,10 @@ function SignIn({ setDisplay, notify , setIsLoading, isLoading}: Props) {
 				<p className="p line">Or With</p>
 
 				<div className="flex-row">
-					<button className="btn google">
+					<button
+						className="btn google"
+						onClick={functionlityOnDevelopment}
+					>
 						<svg
 							version="1.1"
 							width="20"
@@ -195,7 +191,10 @@ function SignIn({ setDisplay, notify , setIsLoading, isLoading}: Props) {
 						</svg>
 						Google
 					</button>
-					<button className="btn apple">
+					<button
+						className="btn apple"
+						onClick={functionlityOnDevelopment}
+					>
 						<svg
 							version="1.1"
 							height="20"
