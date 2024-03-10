@@ -375,11 +375,12 @@ function Expenses({
 							<th>#</th>
 							<th>
 								Name / <br />
-								Description
+								
+								<span id="hide">Description</span>
 							</th>
-							<th>Amount</th>
-							<th>Category</th>
-							<th>Date</th>
+							<th id="hide">Amount</th>
+							<th id="hide">Category</th>
+							<th id="hide">Date</th>
 							<th>Status</th>
 							<th>Actions</th>
 						</tr>

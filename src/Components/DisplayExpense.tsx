@@ -33,8 +33,8 @@ function DisplayExpense({
 }: Props) {
 	const [activeImage, setActiveImage] = useState(expense.receiptsUrls[0]);
 
-	const editAble = expense.userId._id === userId
-	console.log(editAble)
+	const editAble = expense.userId._id === userId;
+	console.log(editAble);
 
 	const [isEdit, setIsEdit] = useState(false);
 
@@ -43,7 +43,9 @@ function DisplayExpense({
 	const [amount, setAmount] = useState(expense.amount);
 	const [expenseDate, setExpenseDate] = useState(expense.date);
 	const [expenseCategory, setExpenseCategory] = useState(expense.category);
-	const [reciptsUrls, setReciptsUrls] = useState<any | "">(expense.receiptsUrls);
+	const [reciptsUrls, setReciptsUrls] = useState<any | "">(
+		expense.receiptsUrls
+	);
 
 	const [imageUploadLoading, setImageUploadLoading] = useState(false);
 
@@ -181,9 +183,9 @@ function DisplayExpense({
 					notify(res.message, "warning");
 				} else {
 					notify(res.message, "success");
-				setTimeout(()=>{
-					window.location.reload();
-				}, 1000)
+					setTimeout(() => {
+						window.location.reload();
+					}, 1000);
 				}
 			})
 			.catch((err) => {
@@ -198,7 +200,7 @@ function DisplayExpense({
 
 	return (
 		<div>
-			{(isEdit && editAble) ? (
+			{isEdit && editAble ? (
 				<form className="form">
 					<div className="flex-column">
 						<label>Heading </label>
@@ -439,13 +441,19 @@ function DisplayExpense({
 						</div>
 					</div>
 
-					<div style={{display:"flex", gap:"20px"}}>
-					<button className="button-submit" onClick={handleExpenseUpdate}>
-						Update Expense
-					</button> 
-					<button className="button-submit" onClick={()=> setIsEdit(false)}>
-						Cancel
-					</button>
+					<div style={{ display: "flex", gap: "20px" }}>
+						<button
+							className="button-submit"
+							onClick={handleExpenseUpdate}
+						>
+							Update Expense
+						</button>
+						<button
+							className="button-submit"
+							onClick={() => setIsEdit(false)}
+						>
+							Cancel
+						</button>
 					</div>
 				</form>
 			) : (
@@ -458,29 +466,68 @@ function DisplayExpense({
 						}}
 					>
 						<h2 style={{ margin: "0px" }}>{expense.name}</h2>
-						{editAble && <button
-							className="button2"
-							style={{ width: "50px", padding: "0px" }}
-							onClick={() => setIsEdit(true)}
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke-width="1.5"
-								stroke="currentColor"
-								className="w-6 h-6"
-								style={{ width: "24px" }}
+						{editAble && (
+							<button
+								className="button2"
+								style={{ width: "50px", padding: "0px" }}
+								onClick={() => setIsEdit(true)}
 							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-								/>
-							</svg>
-						</button>}
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke-width="1.5"
+									stroke="currentColor"
+									className="w-6 h-6"
+									style={{ width: "24px" }}
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+									/>
+								</svg>
+							</button>
+						)}
 					</div>
 					<p style={{ margin: "0px" }}>{expense.description}</p>
+					<p
+						style={{
+							margin: "0px",
+							display: "flex",
+							gap: "20px",
+							alignItems: "center",
+						}}
+					>
+						<span>{expense.amount}</span>
+						<span
+							style={{
+								width: "10px",
+								height: "10px",
+								borderRadius: "50%",
+								backgroundColor: "gray",
+							}}
+						></span>
+						<span>{expense.category}</span>
+						<span
+							style={{
+								width: "10px",
+								height: "10px",
+								borderRadius: "50%",
+								backgroundColor: "gray",
+							}}
+						></span>
+						<span
+							id={expense.status}
+							style={{
+								padding: "5px 8px",
+								textAlign: "center",
+								fontWeight: "600",
+							}}
+						>
+							{expense.status}
+						</span>
+					</p>
 					<div>
 						<img
 							src={activeImage}

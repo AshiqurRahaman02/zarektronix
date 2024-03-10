@@ -5,7 +5,14 @@ import { PieChart, Pie, Legend, Tooltip, ResponsiveContainer } from "recharts";
 
 export default function CustomPieChart({data}:any) {
 	return (
-		<PieChart width={500} height={250}>
+		<PieChart width={500} height={250} 
+		margin={{
+			top: 0,
+			right: 0,
+			left: 0,
+			bottom: 0,
+		}}
+		style={{margin:"auto", width:"100%"}}>
 			<Pie
 				dataKey="totalAmount"
 				isAnimationActive={false}

@@ -6,10 +6,11 @@
 
 -  [Getting Started](#getting-started)
    -  [Prerequisites](#prerequisites)
+   -  [Tech Stacks](#tech-stacks)
    -  [Installation](#installation)
    -  [Configuration](#configuration)
 -  [Usage](#usage)
--  [Zarectronix server](#zarectronix-server)
+-  [Zarektronix server](#zarektronix-server)
 -  [Contributing](#contributing)
 -  [License](#license)
 
@@ -21,6 +22,9 @@ Welcome to the Expense Claim Management App! This section will guide you through
 
 To start with the Expense Claim Management App you don't need any tools but you need a deeper understanding of the [React](https://react.dev/) and [Typescript](https://www.typescriptlang.org/)
 
+## Tech Stacks
+![](https://skillicons.dev/icons?i=react,ts,html,css )
+
 ### Installation
 
 Follow these steps to install and run the project:
@@ -28,13 +32,13 @@ Follow these steps to install and run the project:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/AshiqurRahaman02/zarectronix.git
+   git clone https://github.com/AshiqurRahaman02/zarektronix.git
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd zarectronix
+   cd zarektronix
    ```
 
 3. Set up your environment variables by creating a `.env` file in the root directory. Example content:
@@ -65,9 +69,9 @@ To use the project, follow these steps:
 4. Enter all required fields( Heading, Amount, Date and Category) and choose expense receipt
 5. Click on Submit Expense to submit your expense
 
-## Zarectronix server
+## Zarektronix server
 
-To use the zarectronix server you need to read the configuration at [zarectronix server](https://github.com/AshiqurRahaman02/zarectronix-server.git)
+To use the zarektronix server you need to read the configuration at [zarektronix server](https://github.com/AshiqurRahaman02/zarektronix-server.git)
 
 ## Contributing
 

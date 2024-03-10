@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid } from "recharts";
 
 const colors = [
@@ -36,15 +36,16 @@ const TriangleBar = (props: any) => {
 export default function CustomShapeBar({ data }: any) {
 	return (
 		<BarChart
-			width={900}
+			width={1000}
 			height={400}
 			data={data}
 			margin={{
-				top: 20,
-				right: 30,
-				left: 20,
-				bottom: 5,
+				top: 0,
+				right: 0,
+				left: 0,
+				bottom: 0,
 			}}
+			style={{ margin: "auto", width: "100%" }}
 		>
 			<CartesianGrid strokeDasharray="3 3" />
 			<XAxis dataKey="month" />
